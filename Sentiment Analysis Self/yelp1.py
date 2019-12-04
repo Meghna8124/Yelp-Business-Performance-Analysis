@@ -128,6 +128,7 @@ for i, line in enumerate(ifile):
     if ID == our_business_id:
         our_reviews.append(text)
         
+        
     if ID in max_similar_businesses:
         print(ID)
         reviews.append(text)
@@ -136,8 +137,10 @@ for i, line in enumerate(ifile):
  
     
 # create the DataFrame
+our_data= pd.DataFrame(our_reviews, columns= ['Reviews'])    
 df = pd.DataFrame(all_data, columns=['ID','text'])
 df.to_csv('Final Data.csv')
+our_data.to_csv('Our data.csv')
 #print(df)
         
 res = dict(zip(reviews, businessIdOfReview))
