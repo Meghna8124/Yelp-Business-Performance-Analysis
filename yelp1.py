@@ -111,6 +111,7 @@ ifile = open('yelp_dataset/review.json', encoding = 'utf-8')
 stop = 100000
 data_reviews = list()
 reviews = []
+our_reviews = []
 businessIdOfReview = []
 for i, line in enumerate(ifile):
     
@@ -124,6 +125,9 @@ for i, line in enumerate(ifile):
     ID = data['business_id']
     text = data['text']
     
+    if ID == our_business_id:
+        our_reviews.append(text)
+        
     if ID in max_similar_businesses:
         print(ID)
         reviews.append(text)
