@@ -8,11 +8,12 @@ Created on Tue Dec  3 19:12:22 2019
 import json
 import pandas as pd
 import matplotlib.pyplot as plt
+from collections import Counter
 # open input file: 
 ifile = open('yelp_dataset/business.json', encoding = 'utf-8') 
 # read the first 70k entries
 # set to -1 to process everything
-stop = 70000
+stop = 100000
 all_data = list()
 stateList = []
 businesses = []
@@ -49,17 +50,18 @@ for i, line in enumerate(ifile):
             print(item)
             flag = flag + 1
             break
-    if flag!=0:    
-        favBusiness.append(ID)
-        categoryList.append(categ)
-
+    if flag!=0:   
+        if state== 'AZ':
+            favBusiness.append(ID)
+            categoryList.append(categ)
   
     stateList.append(state)
     businesses.append(ID)
     # add to the data collected so far
+
     
     all_data.append([ID, name, state])
-
+    
 fav_data = []
     
 # create the DataFrame
@@ -68,11 +70,12 @@ print(df)
 
 # df.to_hdf('revie20ws.h5','reviews')
 ifile.close()
-
+all_data = []
 ifile = open('yelp_dataset/review.json', encoding = 'utf-8') 
-stop = 70000
+stop = 100000
 data_reviews = list()
 reviews = []
+businessIdOfReview = []
 for i, line in enumerate(ifile):
     
     if i%10000==0:
@@ -84,12 +87,20 @@ for i, line in enumerate(ifile):
     # extract what we want
     ID = data['business_id']
     text = data['text']
-    reviews.append(text)
-    # add to the data collected so far
-    all_data.append([ID, text])
+    
+    for f_id in favBusiness:    
+        if ID == f_id:
+            reviews.append(text)
+            businessIdOfReview.append(ID)
+            all_data.append([ID, text])
+    
 # create the DataFrame
 df = pd.DataFrame(all_data, columns=['ID','text'])
-print(df)
+#print(df)
+        
+res = dict(zip(reviews, businessIdOfReview))
+Counter(res.values())
+
 
 # df.to_hdf('revie20ws.h5','reviews')
-ifile.close()    
+ifile.close() 
