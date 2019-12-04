@@ -10,7 +10,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from collections import Counter
 import operator
-
+import csv
 # open input file: 
 ifile = open('yelp_dataset/business.json', encoding = 'utf-8') 
 # read the first 70k entries
@@ -133,9 +133,17 @@ for i, line in enumerate(ifile):
     
 # create the DataFrame
 df = pd.DataFrame(all_data, columns=['ID','text'])
+df.to_csv('Final Data.csv')
 #print(df)
         
 res = dict(zip(reviews, businessIdOfReview))
+# =============================================================================
+# with open('Final_data.csv', 'w', newline='') as csvfile:
+#     filewriter = csv.writer(csvfile)
+#     filewriter.writerows(res)
+# csvfile.close()
+# 
+# =============================================================================
 Counter(res.values())
 
 
