@@ -1,16 +1,11 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Dec  3 19:12:22 2019
-
-@author: Vedika Bansal
-"""
-
 import json
 import pandas as pd
 import matplotlib.pyplot as plt
 from collections import Counter
 import operator
 import csv
+import os
+
 # open input file: 
 ifile = open('yelp_dataset/business.json', encoding = 'utf-8') 
 # read the first 70k entries
@@ -126,7 +121,7 @@ for i, line in enumerate(ifile):
     text = data['text']
     
     if ID == our_business_id:
-        our_reviews.append(text)
+        our_reviews.append([ID, text])
         
         
     if ID in max_similar_businesses:
@@ -137,22 +132,24 @@ for i, line in enumerate(ifile):
  
     
 # create the DataFrame
-our_data= pd.DataFrame(our_reviews, columns= ['Reviews'])    
+our_data= pd.DataFrame(our_reviews, columns= ['Id', 'Reviews'])    
 df = pd.DataFrame(all_data, columns=['ID','text'])
+df.to_csv('Final Data.csv')
+with open('Final Data.csv', 'r') as my_file:    
+        reader = csv.reader(my_file)
+        reviews = list(reader)
+        reviews.pop(0)
+        reviews.sort(key = lambda x: x[1]) 
+        [j.pop(0) for j in reviews] 
+        df = pd.DataFrame(reviews, columns=['ID','text'])
+my_file.close()
+os.remove('Final Data.csv')
 df.to_csv('Final Data.csv')
 our_data.to_csv('Our data.csv')
 #print(df)
         
 res = dict(zip(reviews, businessIdOfReview))
-# =============================================================================
-# with open('Final_data.csv', 'w', newline='') as csvfile:
-#     filewriter = csv.writer(csvfile)
-#     filewriter.writerows(res)
-# csvfile.close()
-# 
-# =============================================================================
 Counter(res.values())
-
 
 # df.to_hdf('revie20ws.h5','reviews')
 ifile.close()  
