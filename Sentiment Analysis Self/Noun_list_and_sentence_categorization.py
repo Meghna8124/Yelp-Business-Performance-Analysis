@@ -6,6 +6,9 @@ import csv
 import os
 from textblob import TextBlob as Tb
 import nltk
+import gensim.downloader as api
+from gensim.models import Word2Vec
+import gensim
 
 def sent_splitter(review):
     review= review.replace('\n', '')
@@ -75,3 +78,13 @@ csvfile.close()
 #calling functions
 F1= list_creator('Our data.csv')
 F2= list_creator('Final Data.csv')
+
+model = gensim.models.KeyedVectors.load_word2vec_format('GoogleNews-vectors-negative300.bin', binary=True)
+# categorizing review sentences 
+# fetch nouns from the reviews list, compare them with our keywords
+
+model = gensim.models.KeyedVectors.load_word2vec_format('GoogleNews-vectors-negative300.bin', binary=True)
+
+# example
+print(model.similarity('ambiance', 'lighting'))
+# if the score >= threshold --> categorize to 'ambiance' category
