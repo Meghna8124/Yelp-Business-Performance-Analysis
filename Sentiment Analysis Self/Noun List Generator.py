@@ -75,13 +75,13 @@ our_noun_sentence_polarity = []
 for i in our_review_list:
     for j in i[2]:
         if j in i[1][0][0]:
-            noun_sentence_polarity.append([j,i[1][0][0],i[1][0][1]])
+            our_noun_sentence_polarity.append([j, i[1][0][0], i[1][0][1]])
 
 competitors_noun_sentence_polarity_ID = []
 for i in competitors_review_list:
     for j in i[2]:
         if j in i[1][0][0]:
-            competitors_noun_sentence_polarity_ID.append([j,i[1][0][0],i[1][0][1],i[0]])
+            competitors_noun_sentence_polarity_ID.append([j, i[1][0][0], i[1][0][1], i[0]])
 
 
 model = gensim.models.KeyedVectors.load_word2vec_format('GoogleNews-vectors-negative300.bin', binary=True)
@@ -90,5 +90,45 @@ model = gensim.models.KeyedVectors.load_word2vec_format('GoogleNews-vectors-nega
 
 model = gensim.models.KeyedVectors.load_word2vec_format('GoogleNews-vectors-negative300.bin', binary=True)
 
-# example
+
+# through wordnet
+
+list_food = []
+list_ambiance = []
+list_value_for_money = []
+list_services = []
+
+# through hit and trial
+
+threshold_food = 0.5
+threshold_ambience = 0.5
+threshold_value_for_money = 0.5
+threshold_services = 0.5
+
+#categorized review sentences and their polarity
+
+our_food_reviews = []
+our_ambiance_reviews = []
+our_value_for_money_reviews = []
+our_services_reviews = []
+
+comp_food_reviews = []
+comp_ambiance_reviews = []
+comp_value_for_money_reviews = []
+comp_services_reviews = []
+
+for noun in our_noun_sentence_polarity[0]:
+    for words in list_food:
+        if(model.similarity(noun, words) > threshold_food):
+            our_food_reviews.append([our_noun_sentence_polarity[1],our_noun_sentence_polarity[2]])
+    for words in list_ambiance:
+        if(model.similarity(noun, words) > threshold_ambiance):
+            our_ambiance_reviews.append([our_noun_sentence_polarity[1],our_noun_sentence_polarity[2]])            
+    for words in list_value_for_money_reviews:
+        if(model.similarity(noun, words) > threshold_value_for_money):
+            our_value_for_money_reviews.append([our_noun_sentence_polarity[1],our_noun_sentence_polarity[2]])
+    for words in list_services:
+        if(model.similarity(noun, words) > threshold_services):
+            our_services_reviews.append([our_noun_sentence_polarity[1],our_noun_sentence_polarity[2]])
+
 print(model.similarity('ambiance', 'lighting'))   
