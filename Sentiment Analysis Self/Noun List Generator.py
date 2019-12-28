@@ -131,4 +131,17 @@ for noun in our_noun_sentence_polarity[0]:
         if(model.similarity(noun, words) > threshold_services):
             our_services_reviews.append([our_noun_sentence_polarity[1],our_noun_sentence_polarity[2]])
 
+for noun in competitors_noun_sentence_polarity_ID[0]:
+    for words in list_food:
+        if(model.similarity(noun, words) > threshold_food):
+            comp_food_reviews.append([competitors_noun_sentence_polarity_ID[1],competitors_noun_sentence_polarity_ID[2],competitors_noun_sentence_polarity_ID[3]])
+    for words in list_ambiance:
+        if(model.similarity(noun, words) > threshold_ambiance):
+            comp_ambiance_reviews.append([competitors_noun_sentence_polarity_ID[1],competitors_noun_sentence_polarity_ID[2],competitors_noun_sentence_polarity_ID[3]])            
+    for words in list_value_for_money_reviews:
+        if(model.similarity(noun, words) > threshold_value_for_money):
+            comp_value_for_money_reviews.append([competitors_noun_sentence_polarity_ID[1],competitors_noun_sentence_polarity_ID[2],competitors_noun_sentence_polarity_ID[3]])
+    for words in list_services:
+        if(model.similarity(noun, words) > threshold_services):
+            comp_services_reviews.append([competitors_noun_sentence_polarity_ID[1],competitors_noun_sentence_polarity_ID[2],competitors_noun_sentence_polarity_ID[3]])
 print(model.similarity('ambiance', 'lighting'))   
