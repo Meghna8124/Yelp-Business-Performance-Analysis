@@ -93,12 +93,60 @@ model = gensim.models.KeyedVectors.load_word2vec_format('GoogleNews-vectors-nega
 
 
 # through wordnet
+from nltk.corpus import wordnet as wn
+
+food_synsets = []
+food_synsets += wn.synset('dish.n.02').hyponyms()
+food_synsets += [wn.synset('beverage.n.01')]
+food_synsets += wn.synset('food.n.02').hyponyms()
+food_synsets += wn.synset('beverage.n.01').hyponyms()
+
+ambiance_synsets = []
+ambiance_synsets += wn.synsets('ambiance')
+ambiance_synsets += wn.synset('atmosphere.n.01').hyponyms()
+ambiance_synsets += [wn.synset('lighting.n.03')]
+ambiance_synsets += wn.synsets('decor')
+ambiance_synsets += [wn.synset('aura.n.03')]
+ambiance_synsets += wn.synset('decoration.n.01').hyponyms()
+
+service_synsets = []
+service_synsets += [wn.synset('service.n.02')]
+service_synsets += [wn.synset('service.n.15')]
+service_synsets += wn.synset('service.n.15').hyponyms()
+service_synsets += [wn.synset('waiter.n.01')]
+service_synsets += wn.synset('waiter.n.01').hyponyms()
+
+value_synsets = []
+value_synsets += [wn.synset('worth.n.01')]
+value_synsets += [wn.synset('monetary_value.n.01')]
+value_synsets += wn.synset('monetary_value.n.01').hyponyms()
 
 list_food = []
 list_ambiance = []
 list_value_for_money = []
 list_services = []
 
+for syn in food_synsets:
+	for l in syn.lemmas():
+		list_food.append(l.name())
+        
+for syn in ambiance_synsets:
+	for l in syn.lemmas():
+		list_ambiance.append(l.name())
+        
+for syn in service_synsets:
+	for l in syn.lemmas():
+		list_services.append(l.name())
+
+for syn in value_synsets:
+	for l in syn.lemmas():
+		list_value_for_money.append(l.name())
+
+list_food = set(list_food)
+list_ambiance = set(list_ambiance)
+list_value_for_money = set(list_value_for_money)
+list_services = set(list_services)
+        
 # through hit and trial
 
 threshold_food = 0.5
