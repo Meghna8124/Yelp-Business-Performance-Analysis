@@ -258,4 +258,6 @@ comp_services_reviews = Sort(comp_food_reviews)
 # take top 5 reviews for the most negative ones
 # take bottom 5 reviews for the most positive ones
 
+# the backend yet to be connected to the website
+
 #print(model.similarity('ambiance', 'lighting'))   
