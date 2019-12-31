@@ -237,4 +237,25 @@ with open('our_food', 'rb') as f:
     mynewlist = pickle.load(f)
 f.close()
 
+def Sort(rev): 
+  
+    # reverse = None (Sorts in Ascending order) 
+    # key is set to sort using second element of  
+    # sublist lambda has been used 
+    rev.sort(key = lambda x: x[1]) 
+    return rev 
+
+our_food_reviews = Sort(our_food_reviews)
+our_ambiance_reviews = Sort(our_food_reviews)
+our_value_for_money_reviews = Sort(our_food_reviews)
+our_services_reviews = Sort(our_food_reviews)
+
+comp_food_reviews = Sort(comp_food_reviews)
+comp_ambiance_reviews = Sort(comp_food_reviews)
+comp_value_for_money_reviews = Sort(comp_food_reviews)
+comp_services_reviews = Sort(comp_food_reviews)
+
+# take top 5 reviews for the most negative ones
+# take bottom 5 reviews for the most positive ones
+
 #print(model.similarity('ambiance', 'lighting'))   
