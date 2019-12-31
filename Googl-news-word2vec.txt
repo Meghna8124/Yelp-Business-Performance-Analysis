@@ -1,0 +1,25 @@
+We are going to use google’s pre-trained model. It contains word vectors for a vocabulary of 3 million words trained on around 100 billion words from the google news dataset. The downlaod link for the model is this. Beware it is a 1.5 GB download
+
+from gensim.models import Word2Vec
+
+#loading the downloaded model
+model = Word2Vec.load_word2vec_format('GoogleNews-vectors-negative300.bin', binary=True, norm_only=True)
+
+#the model is loaded. It can be used to perform all of the tasks mentioned above.
+
+# getting word vectors of a word
+dog = model['dog']
+
+#performing king queen magic
+print(model.most_similar(positive=['woman', 'king'], negative=['man']))
+
+#picking odd one out
+print(model.doesnt_match("breakfast cereal dinner lunch".split()))
+
+#printing similarity index
+print(model.similarity('woman', 'man'))
+
+
+
+drive link:
+https://drive.google.com/file/d/0B7XkCwpI5KDYNlNUTTlSS21pQmM/edit
