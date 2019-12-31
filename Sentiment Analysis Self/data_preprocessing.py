@@ -17,6 +17,8 @@ businesses = []
 categoryList = []
 favBusiness = []
 
+# to be entered by the businessman when connected with the website
+
 our_business_id = 'SBNucLXc9dQP6VBj__XOmQ'
 our_business_categories = []
 
@@ -51,15 +53,17 @@ for i, line in enumerate(ifile):
             flag = flag + 1
             break
     if flag!=0:   
+        # our example restaurant is in Arizona (AZ) and we aim to mine restaurants only of the locality
         if state== 'AZ':
             favBusiness.append(ID)
             categoryList.append(categ)
             
-    if ID== our_business_id:
+    if ID == our_business_id:
         our_business_categories = categ
         
     stateList.append(state)
     businesses.append(ID)
+    
     # add to the data collected so far
     
     all_data.append([ID, name, state])
@@ -72,7 +76,7 @@ print(df)
 ifile.close()
 # df.to_hdf('revie20ws.h5','reviews')
 
-# get the count of categories overlapping with our business
+# get the count of categories overlapping with our business's categories
 size = len(favBusiness)
 similarity_count = []
 similar_business_id = []
@@ -93,7 +97,7 @@ similarity_dict = dict(zip(similar_business_id, similarity_count))
     
 sorted_similarity_dict = sorted(similarity_dict.items(), key=operator.itemgetter(1))
 
-# collecting business ids with max similarity
+# collecting business ids with max similarity in categories
 threshold = 50
 max_similar_businesses = []
 max_counts = []

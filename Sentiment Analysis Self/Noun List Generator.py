@@ -152,7 +152,7 @@ list_services = set(list_services)
 
 threshold_food = 0.5
 threshold_ambiance = 0.44
-threshold_value_for_money = 0.4
+threshold_value_for_money = 0.44
 threshold_services = 0.5
 
 #categorized review sentences and their polarity
@@ -191,8 +191,6 @@ for row in our_noun_sentence_polarity:
     for words in list_services:
         if words in word_vectors.vocab:
             if row[0] in word_vectors.vocab:
-                print(row[0])
-                print(model.similarity(row[0], words))
                 if(model.similarity(row[0], words) > threshold_services):
                     our_services_reviews.append([row[1],row[2]])   
                     break
@@ -207,8 +205,6 @@ for row in competitors_noun_sentence_polarity_ID:
     for words in list_food:
         if words in word_vectors.vocab:
             if row[0] in word_vectors.vocab:
-                print(row[0])
-                print(model.similarity(row[0], words))
                 if(model.similarity(row[0], words) > threshold_food):
                     comp_food_reviews.append([row[1],row[2],row[3]])
                     break
@@ -216,8 +212,6 @@ for row in competitors_noun_sentence_polarity_ID:
     for words in list_ambiance:
         if words in word_vectors.vocab:
             if row[0] in word_vectors.vocab:
-                print(row[0])
-                print(model.similarity(row[0], words))
                 if(model.similarity(row[0], words) > threshold_ambiance):
                     comp_ambiance_reviews.append([row[1],row[2],row[3]])
                     break
@@ -225,8 +219,6 @@ for row in competitors_noun_sentence_polarity_ID:
     for words in list_value_for_money:
         if words in word_vectors.vocab:
             if row[0] in word_vectors.vocab:
-                print(row[0])
-                print(model.similarity(row[0], words))
                 if(model.similarity(row[0], words) > threshold_value_for_money):
                     comp_value_for_money_reviews.append([row[1],row[2],row[3]])
                     break
@@ -234,16 +226,15 @@ for row in competitors_noun_sentence_polarity_ID:
     for words in list_services:
         if words in word_vectors.vocab:
             if row[0] in word_vectors.vocab:
-                print(row[0])
-                print(model.similarity(row[0], words))
                 if(model.similarity(row[0], words) > threshold_services):
                     comp_services_reviews.append([row[1],row[2],row[3]])
                     break 
 
-with open('our_food_reviews.pickle', 'wb') as f:
+with open('our_food', 'wb') as f:
     pickle.dump(our_food_reviews, f)
     
-with open('our_food_reviews.pickle', 'rb') as f:
+with open('our_food', 'rb') as f:
     mynewlist = pickle.load(f)
-  
-print(model.similarity('ambiance', 'lighting'))   
+f.close()
+
+#print(model.similarity('ambiance', 'lighting'))   
