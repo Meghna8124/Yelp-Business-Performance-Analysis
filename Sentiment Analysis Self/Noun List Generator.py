@@ -9,6 +9,7 @@ import nltk
 import gensim.downloader as api
 from gensim.models import Word2Vec
 import gensim
+import pickle
 
 def sent_splitter(review):
     review= review.replace('\n', '')
@@ -90,7 +91,7 @@ model = gensim.models.KeyedVectors.load_word2vec_format('GoogleNews-vectors-nega
 # fetch nouns from the reviews list, compare them with our keywords
 
 model = gensim.models.KeyedVectors.load_word2vec_format('GoogleNews-vectors-negative300.bin', binary=True)
-
+word_vectors = model.wv
 
 # through wordnet
 from nltk.corpus import wordnet as wn
@@ -150,8 +151,8 @@ list_services = set(list_services)
 # through hit and trial
 
 threshold_food = 0.5
-threshold_ambience = 0.5
-threshold_value_for_money = 0.5
+threshold_ambiance = 0.44
+threshold_value_for_money = 0.4
 threshold_services = 0.5
 
 #categorized review sentences and their polarity
@@ -161,46 +162,88 @@ our_ambiance_reviews = []
 our_value_for_money_reviews = []
 our_services_reviews = []
 
+for row in our_noun_sentence_polarity:
+    for words in list_food:
+        if words in word_vectors.vocab:
+            if row[0] in word_vectors.vocab:                
+                if(model.similarity(row[0], words) > threshold_food):
+                    our_food_reviews.append([row[1],row[2]])
+                    # print(model.similarity(row[0], words))
+                    break
+            
+    for words in list_ambiance:
+        if words in word_vectors.vocab:
+            if row[0] in word_vectors.vocab:   
+                #print(model.similarity(row[0], words))
+                if(model.similarity(row[0], words) > threshold_ambiance):
+                    our_ambiance_reviews.append([row[1],row[2]])
+                    break
+            
+    for words in list_value_for_money:
+        if words in word_vectors.vocab:
+            if row[0] in word_vectors.vocab:
+                print(row[0])
+                print(model.similarity(row[0], words))
+                if(model.similarity(row[0], words) > threshold_value_for_money):
+                    our_value_for_money_reviews.append([row[1],row[2]])
+                    break        
+            
+    for words in list_services:
+        if words in word_vectors.vocab:
+            if row[0] in word_vectors.vocab:
+                print(row[0])
+                print(model.similarity(row[0], words))
+                if(model.similarity(row[0], words) > threshold_services):
+                    our_services_reviews.append([row[1],row[2]])   
+                    break
+
 comp_food_reviews = []
 comp_ambiance_reviews = []
 comp_value_for_money_reviews = []
-comp_services_reviews = []
-
-for noun in our_noun_sentence_polarity[0]:
+comp_services_reviews = [] 
+              
+for row in competitors_noun_sentence_polarity_ID:
     
     for words in list_food:
-        if(model.similarity(noun, words) > threshold_food):
-            our_food_reviews.append([our_noun_sentence_polarity[1],our_noun_sentence_polarity[2]])
-            
-    for words in list_ambiance:
-        if(model.similarity(noun, words) > threshold_ambiance):
-            our_ambiance_reviews.append([our_noun_sentence_polarity[1],our_noun_sentence_polarity[2]]) 
-            
-    for words in list_value_for_money_reviews:
-        if(model.similarity(noun, words) > threshold_value_for_money):
-            our_value_for_money_reviews.append([our_noun_sentence_polarity[1],our_noun_sentence_polarity[2]])
-            
-    for words in list_services:
-        if(model.similarity(noun, words) > threshold_services):
-            our_services_reviews.append([our_noun_sentence_polarity[1],our_noun_sentence_polarity[2]])
+        if words in word_vectors.vocab:
+            if row[0] in word_vectors.vocab:
+                print(row[0])
+                print(model.similarity(row[0], words))
+                if(model.similarity(row[0], words) > threshold_food):
+                    comp_food_reviews.append([row[1],row[2],row[3]])
+                    break
 
-for noun in competitors_noun_sentence_polarity_ID[0]:
+    for words in list_ambiance:
+        if words in word_vectors.vocab:
+            if row[0] in word_vectors.vocab:
+                print(row[0])
+                print(model.similarity(row[0], words))
+                if(model.similarity(row[0], words) > threshold_ambiance):
+                    comp_ambiance_reviews.append([row[1],row[2],row[3]])
+                    break
+                
+    for words in list_value_for_money:
+        if words in word_vectors.vocab:
+            if row[0] in word_vectors.vocab:
+                print(row[0])
+                print(model.similarity(row[0], words))
+                if(model.similarity(row[0], words) > threshold_value_for_money):
+                    comp_value_for_money_reviews.append([row[1],row[2],row[3]])
+                    break
+
+    for words in list_services:
+        if words in word_vectors.vocab:
+            if row[0] in word_vectors.vocab:
+                print(row[0])
+                print(model.similarity(row[0], words))
+                if(model.similarity(row[0], words) > threshold_services):
+                    comp_services_reviews.append([row[1],row[2],row[3]])
+                    break 
+
+with open('our_food_reviews.pickle', 'wb') as f:
+    pickle.dump(our_food_reviews, f)
     
-    for words in list_food:
-        if(model.similarity(noun, words) > threshold_food):
-            comp_food_reviews.append([competitors_noun_sentence_polarity_ID[1],competitors_noun_sentence_polarity_ID[2],competitors_noun_sentence_polarity_ID[3]])
-
-    for words in list_ambiance:
-        if(model.similarity(noun, words) > threshold_ambiance):
-            comp_ambiance_reviews.append([competitors_noun_sentence_polarity_ID[1],competitors_noun_sentence_polarity_ID[2],competitors_noun_sentence_polarity_ID[3]])            
-
-    for words in list_value_for_money_reviews:
-        if(model.similarity(noun, words) > threshold_value_for_money):
-            comp_value_for_money_reviews.append([competitors_noun_sentence_polarity_ID[1],competitors_noun_sentence_polarity_ID[2],competitors_noun_sentence_polarity_ID[3]])
-
-    for words in list_services:
-        if(model.similarity(noun, words) > threshold_services):
-            comp_services_reviews.append([competitors_noun_sentence_polarity_ID[1],competitors_noun_sentence_polarity_ID[2],competitors_noun_sentence_polarity_ID[3]])
-
-
+with open('our_food_reviews.pickle', 'rb') as f:
+    mynewlist = pickle.load(f)
+  
 print(model.similarity('ambiance', 'lighting'))   
